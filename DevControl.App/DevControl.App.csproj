@@ -14,7 +14,7 @@
     <PackageProjectUrl>https://devcontrol.app</PackageProjectUrl>
     <Version></Version>
     <NeutralLanguage>pt-BR</NeutralLanguage>
-    <AssemblyVersion>1.0.0</AssemblyVersion>
+    <AssemblyVersion>1.6.3</AssemblyVersion>
     <Company>PBOX Lab</Company>
     <Description>Ferramenta para gerenciar projetos de desenvolvimento</Description>
     <RepositoryUrl>https://github.com/pboxlab/devcontrol.app</RepositoryUrl>

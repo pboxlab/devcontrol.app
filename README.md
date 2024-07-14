@@ -47,3 +47,17 @@ Este projeto é licenciado sob os termos da licença MIT. Veja o arquivo LICENSE
 
 ## Contato
 Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para abrir uma issue ou enviar um e-mail para estevao.silva@pbox.com.br.
+
+## Current Release
+[Download versão 1.5.3](https://github.com/pboxlab/devcontrol.app/releases/download/1.5.3/DevControlApp-1.5.3-Setup.exe)
+
+- Verificação e Validação do Banco de Dados na Inicialização; [#1](https://github.com/pboxlab/devcontrol.app/issues/1)
+- Atualizar combobox projetos ao clicar no botão de recarregar [#2](https://github.com/pboxlab/devcontrol.app/issues/2)
+- Configuração de Injeção de Dependências Global;
+- Melhoria no Tratamento de Exceções;
+- Refatoração das Classes de Repositórios;
+- Aprimoramento do Método OpenPathClick;
+- Correção de Chamadas Assíncronas;
+- Ajuste nas Nomenclaturas dos Métodos;
+- Refatoração da Classe WindowMonitor;
+- Configurar fornecedor no instalador. [#3](https://github.com/pboxlab/devcontrol.app/issues/3)
