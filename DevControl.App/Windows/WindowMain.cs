@@ -37,10 +37,20 @@ namespace DevControl.App.Windows
                 }
             }
 
-            if (!AppConfig.ProgramConfigured)
+            if (!AppConfig.ProgramConfigured && string.IsNullOrEmpty(AppConfig.PathDatabase))
             {
                 WindowConfiguracao windowConfiguracao = new();
                 windowConfiguracao.ShowDialog();
+            }
+
+            if (!string.IsNullOrEmpty(AppConfig.PathDatabase) && !File.Exists(AppConfig.PathDatabase))
+            {
+                var result = MessageBox.Show($"Não encontramos uma configuração válida para o banco de dados.", "Banco de dados", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (result == DialogResult.OK)
+                {
+                    WindowConfiguracao windowConfiguracao = new();
+                    windowConfiguracao.ShowDialog();
+                }
             }
 
             OpenForm(new WindowMonitor());

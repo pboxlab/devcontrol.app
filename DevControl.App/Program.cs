@@ -1,4 +1,5 @@
 using DevControl.App.Windows;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace DevControl.App
 {
@@ -17,7 +18,20 @@ namespace DevControl.App
             }
 
             ApplicationConfiguration.Initialize();
-            Application.Run(new WindowMain());
+
+            var serviceCollection = new ServiceCollection();
+            ConfigureServices(serviceCollection);
+
+            var serviceProvider = serviceCollection.BuildServiceProvider();
+
+            var mainForm = serviceProvider.GetRequiredService<WindowMain>();
+            Application.Run(mainForm);
+        }
+
+        private static void ConfigureServices(IServiceCollection services)
+        {
+            services.AddSingleton<WindowMain>();
+            //services.AddTransient<IMyService, MyService>(); // Registrar outros serviços
         }
     }
 }

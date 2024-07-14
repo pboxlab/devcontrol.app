@@ -43,23 +43,38 @@ namespace DevControl.App.Data.Repositories
             WHERE
                 Id = @Id";
 
-        public async Task<List<ConfiguracaoEntity>> LoadRecords()
+        public async Task<List<ProjectEntity>> LoadRecordsAsync()
         {
-            using var connection = new SQLiteConnection(_pathDataBase);
-            var result = await connection.QueryAsync<ConfiguracaoEntity>(sqlSelect);
-            return result.ToList();
+            try
+            {
+                using var connection = new SQLiteConnection(_pathDataBase);
+                var result = await connection.QueryAsync<ProjectEntity>(sqlSelect);
+                return result.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async void ExecuteQuery(ConfiguracaoDto dto, TypeQueryExecuteEnum isInsert)
+        public async Task ExecuteQueryAsync(ProjectDto dto, TypeQueryExecuteEnum isInsert)
         {
-            var query = isInsert switch
+            try
             {
-                TypeQueryExecuteEnum.Insert => sqlInsert,
-                TypeQueryExecuteEnum.Update => sqlUpdate,
-                TypeQueryExecuteEnum.Delete => sqlDelete,
-            };
-            using var connection = new SQLiteConnection(_pathDataBase);
-            await connection.ExecuteAsync(query, dto);
+                var query = isInsert switch
+                {
+                    TypeQueryExecuteEnum.Insert => sqlInsert,
+                    TypeQueryExecuteEnum.Update => sqlUpdate,
+                    TypeQueryExecuteEnum.Delete => sqlDelete,
+                    _ => throw new NotImplementedException(),
+                };
+                using var connection = new SQLiteConnection(_pathDataBase);
+                await connection.ExecuteAsync(query, dto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

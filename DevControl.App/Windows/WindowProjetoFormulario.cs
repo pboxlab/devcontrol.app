@@ -35,7 +35,7 @@ namespace DevControl.App.Windows
             textProjetoPath.Text = string.Empty;
         }
 
-        private void btnProjetoSalvar_Click(object sender, EventArgs e)
+        private async void btnProjetoSalvar_Click(object sender, EventArgs e)
         {
             var dto = new ProjectDto
             {
@@ -56,13 +56,16 @@ namespace DevControl.App.Windows
             }
             dto.Path = textProjetoPath.Text;
 
-            if (Projeto.Id == 0)
+            TypeQueryExecuteEnum commandExecute = (Projeto.Id == 0) ? TypeQueryExecuteEnum.Insert : TypeQueryExecuteEnum.Update;
+
+            try
             {
-                ProjetosRepository.ExecuteQueryAsync(dto, TypeQueryExecuteEnum.Insert);
+                await ProjetosRepository.ExecuteQueryAsync(dto, commandExecute);                
             }
-            else
+            catch (Exception ex)
             {
-                ProjetosRepository.ExecuteQueryAsync(dto, TypeQueryExecuteEnum.Update);
+                MessageBox.Show($"Erro ao tentar salvar o projeto.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
             }
 
             ReloadProjetos?.Invoke(this, EventArgs.Empty);

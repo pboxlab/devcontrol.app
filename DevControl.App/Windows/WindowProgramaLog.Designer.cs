@@ -91,7 +91,7 @@
             checkProcessoAtual.TabIndex = 5;
             checkProcessoAtual.Text = "Somente do processo atual";
             checkProcessoAtual.UseVisualStyleBackColor = true;
-            checkProcessoAtual.CheckedChanged += checkProcessoAtual_CheckedChanged;
+            checkProcessoAtual.CheckedChanged += CheckProcessoAtual_CheckedChanged;
             // 
             // btnLimparLog
             // 
@@ -102,7 +102,7 @@
             btnLimparLog.TabIndex = 4;
             btnLimparLog.Text = "Apagar Logs";
             btnLimparLog.UseVisualStyleBackColor = true;
-            btnLimparLog.Click += btnLimparLog_Click;
+            btnLimparLog.Click += BtnLimparLog_Click;
             // 
             // btnReloadLogs
             // 
@@ -113,7 +113,7 @@
             btnReloadLogs.TabIndex = 3;
             btnReloadLogs.Text = "Recarregar";
             btnReloadLogs.UseVisualStyleBackColor = true;
-            btnReloadLogs.Click += btnReloadLogs_Click;
+            btnReloadLogs.Click += BtnReloadLogs_Click;
             // 
             // WindowProgramaLog
             // 

@@ -10,24 +10,23 @@ namespace DevControl.App.Windows
 {
     public partial class WindowMonitor : Form
     {
-        private int? _modelProjetoId;
-        private ProgramTypeEnum? _modelTipoId;
-        private bool _enableLoad = false;
+        private          int?                  _modelProjetoId;
+        private          ProgramTypeEnum?      _modelTipoId;
+        private          bool                  _enableLoad            = false;
 
-        private readonly ProcessService _processService = new();
-        private readonly ProjectRepository _projetoRepository = new();
-        private readonly ProgramRepository _programaRepository = new();
+        private readonly ProcessService        _processService        = new();
+        private readonly ProjectRepository     _projetoRepository     = new();
+        private readonly ProgramRepository     _programaRepository    = new();
         private readonly LogsProcessRepository _logsProcessRepository = new();
 
-        private List<ProgramEntity> _programasAll = new();
-        private List<ProgramEntity> _programas = new();
-        private ProgramFormWindow _programFormWindow = new();
+        private          List<ProgramEntity>   _programasAll          = new();
+        private          List<ProgramEntity>   _programas             = new();
+        private          ProgramFormWindow     _programFormWindow     = new();
 
         public WindowMonitor()
         {
-            _programFormWindow.ProgramsReloaded += ReloadProgramas;
-
             InitializeComponent();
+            _programFormWindow.ProgramsReloaded += (s, e) => LoadProgramas();
         }
 
         protected override void OnShown(EventArgs e)
@@ -43,7 +42,18 @@ namespace DevControl.App.Windows
 
         public async void DataFiltroProjetos()
         {
-            var projetos = await _projetoRepository.LoadRecordsAsync();
+            List<ProjectEntity> projetos = new();
+
+            try
+            {
+                projetos = await _projetoRepository.LoadRecordsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao tentar carregar os projetos\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             projetos.Insert(0, new() { Id = 0, Name = "", Path = "" });
             boxFiltroProjeto.DataSource = projetos;
         }
@@ -80,11 +90,19 @@ namespace DevControl.App.Windows
 
         private async void LoadProgramas()
         {
-            _programas = await _programaRepository.LoadRecords(new()
+            try
             {
-                ProjectId = _modelProjetoId,
-                Type = _modelTipoId
-            });
+                _programas = await _programaRepository.LoadRecords(new()
+                {
+                    ProjectId = _modelProjetoId,
+                    Type = _modelTipoId
+                });
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao tentar carregar os programas\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             panelMotiporProgramas.Controls.Clear();
 
@@ -118,11 +136,11 @@ namespace DevControl.App.Windows
                 Size = new Size(20, 20),
                 Image = projeto.Type switch
                 {
-                    ProgramTypeEnum.DotNet => Properties.Resources.iconDotNet20x,
+                    ProgramTypeEnum.DotNet  => Properties.Resources.iconDotNet20x,
                     ProgramTypeEnum.Angular => Properties.Resources.iconAngular20x,
-                    ProgramTypeEnum.NodeJs => Properties.Resources.iconNodeJs20x,
-                    ProgramTypeEnum.PHP => Properties.Resources.iconPhp20x,
-                    _ => Properties.Resources.iconAnyFile20x,
+                    ProgramTypeEnum.NodeJs  => Properties.Resources.iconNodeJs20x,
+                    ProgramTypeEnum.PHP     => Properties.Resources.iconPhp20x,
+                    _                       => Properties.Resources.iconAnyFile20x,
                 }
             });
 
@@ -130,7 +148,7 @@ namespace DevControl.App.Windows
             {
                 new (projeto.Name!,            $"labelProgramaNome_{projeto.Id}", 150),
                 new (projeto.ProjectName!,     $"labelProjetoNome_{projeto.Id}",  150),
-                new (projeto.Port.ToString()!, $"labelProjetoPorta_{projeto.Id}", 50),
+                new (projeto.Port.ToString()!, $"labelProgramaPorta_{projeto.Id}", 50),
             };
             var p = 25;
             foreach (var label in labelList)
@@ -139,25 +157,17 @@ namespace DevControl.App.Windows
                 p = p + label.Width;
             }
 
+            var iconEditor = (projeto.Type == ProgramTypeEnum.DotNet) ? Properties.Resources.btnOpenIDE : Properties.Resources.btnOpenEditor;
             var buttonList = new List<(object Text, int Width, string Tag, string Function)>
             {
-                new(Properties.Resources.btnDelete, 25,     $"btnApagar_{projeto.Id}",   "btnApagarProjeto_Click"),
-                new(Properties.Resources.btnEdit, 25,       $"btnEditar_{projeto.Id}",   "btnEditarProjeto_Click"),
-                new(Properties.Resources.btnOpenFolder, 25, $"btnExplorar_{projeto.Id}", "btnOpenDirectory_Click")
+                new(Properties.Resources.btnDelete,      25, $"btnApagar_{projeto.Id}",      "btnApagarProjeto_Click"),
+                new(Properties.Resources.btnEdit,        25, $"btnEditar_{projeto.Id}",      "btnFormularioProjeto_Click"),
+                new(Properties.Resources.btnOpenFolder,  25, $"btnExplorar_{projeto.Id}",    "btnOpenDirectory_Click"),
+                new(Properties.Resources.iconGit20x,     25, $"btnGit_{projeto.Id}",         "btnOpenGit_Click"),
+                new(iconEditor,                          25, $"btnAbrir_{projeto.Id}",       "btnOpenEditor_Click"),
+                new(Properties.Resources.btnLog,         25, $"btnLog_{projeto.Id}",         "btnOpenLog_Click"),
+                new("Start",                            100, $"btnStart_{projeto.Id}",       "btnService_Click"),
             };
-
-            if (projeto.Type == ProgramTypeEnum.DotNet && !string.IsNullOrEmpty(projeto.Workspace))
-            {
-                buttonList.Add(new(Properties.Resources.btnOpenIDE, 25, $"btnAbrir_{projeto.Id}", "btnOpenVisualStudio_Click"));
-            }
-            else
-            {
-                buttonList.Add(new(Properties.Resources.btnOpenEditor, 25, $"btnAbrir_{projeto.Id}", "btnOpenVsCode_Click"));
-            }
-
-            buttonList.Add(new(Properties.Resources.iconGit20x, 25, $"btnGit_{projeto.Id}", "btnOpenGit_Click"));
-            buttonList.Add(new("Start", 50, $"btnStart_{projeto.Id}", "btnStartService_Click"));
-            buttonList.Add(new(Properties.Resources.btnLog, 25, $"btnLog_{projeto.Id}", "btnOpenLog_Click"));
 
             var b = widthTotal;
             foreach (var button in buttonList)
@@ -165,9 +175,6 @@ namespace DevControl.App.Windows
                 b = (b - button.Width) - 5;
                 panel.Controls.Add(ButtonPanel(projeto, button.Text, button.Tag, button.Width, b, button.Function));
             }
-
-            var wL = 50;
-            panel.Controls.Add(PanelComponents.LabelPanel("", $"labelProjetoProcessId_{projeto.Id}", wL, (b - wL - 5)));
 
             panelMotiporProgramas.Controls.Add(panel);
 
@@ -182,7 +189,7 @@ namespace DevControl.App.Windows
             }
         }
 
-        private Button ButtonPanel(ProgramEntity projeto, object text, string tag, int width, int px, string? funcao = null)
+        private Button ButtonPanel(ProgramEntity programa, object text, string tag, int width, int px, string? funcao = null)
         {
             var button = new Button();
 
@@ -204,29 +211,39 @@ namespace DevControl.App.Windows
             {
                 switch (funcao)
                 {
-                    case "btnStartService_Click":
-                        button.Click += (s, e) => btnStartService_Click(projeto);
-                        break;
-                    case "btnEditarProjeto_Click":
-                        button.Click += (s, e) => btnEditarProjeto_Click(projeto);
-                        break;
                     case "btnApagarProjeto_Click":
-                        button.Click += (s, e) => btnApagarProjeto_Click(projeto);
+                        button.Click += (s, e) => BtnApagarProjeto_Click(programa);
+                        break;
+                    case "btnFormularioProjeto_Click":
+                        button.Click += (s, e) => BtnFormularioProjeto_Click(programa);
                         break;
                     case "btnOpenDirectory_Click":
-                        button.Click += (s, e) => DialogCommon.OpenDirectoryClick(projeto.Path ?? "");
-                        break;
-                    case "btnOpenVsCode_Click":
-                        button.Click += (s, e) => btnOpenVsCode_Click(projeto);
-                        break;
-                    case "btnOpenVisualStudio_Click":
-                        button.Click += (s, e) => btnOpenVisualStudio_Click(projeto);
-                        break;
-                    case "btnOpenLog_Click":
-                        button.Click += (s, e) => btnOpenLog_Click(projeto);
+                        button.Click += (s, e) => DialogCommon.OpenPathClick(programa.Path!);
                         break;
                     case "btnOpenGit_Click":
-                        button.Click += (s, e) => btnOpenGit_Click(projeto);
+                        button.Click += (s, e) => DialogCommon.OpenPathClick(programa.RepositoryUrl!, "browser");
+                        break;
+                    case "btnOpenEditor_Click":
+                        button.Click += (s, e) => {
+                            if (programa.Type == ProgramTypeEnum.DotNet)
+                            {
+                                DialogCommon.OpenPathClick(programa.Workspace!);
+                            }
+                            else
+                            {
+                                DialogCommon.OpenPathClick(programa.Path!, "cmd.exe", "/c code .");
+                            }
+                        };
+                        break;
+                    case "btnOpenLog_Click":
+                        button.Click += (s, e) =>
+                        {
+                            WindowProgramaLog _winProjetoLog = new(programa);
+                            _winProjetoLog.Show();
+                        };
+                        break;
+                    case "btnService_Click":
+                        button.Click += (s, e) => BtnStartService_Click(programa);
                         break;
                 }
             }
@@ -247,11 +264,6 @@ namespace DevControl.App.Windows
                 }
             }
             return null;
-        }
-
-        public void ReloadProgramas(object sender, EventArgs e)
-        {
-            LoadProgramas();
         }
 
         private Process? GetProcessProjeto(ProgramEntity projeto)
@@ -296,18 +308,15 @@ namespace DevControl.App.Windows
 
         private void ChangeButton(ProgramEntity projeto, ButtonStatusEnum status)
         {
-            SetTextLabel($"labelProjetoProcessId_{projeto.Id}", "");
-
             if (projeto.Button == null) return;
 
             switch (status)
             {
                 case ButtonStatusEnum.Running:
                     projeto.Button.Enabled = true;
-                    projeto.Button.Text = "Stop";
+                    projeto.Button.Text = $"Stop: [{projeto.Process.Id}]";
                     projeto.Button.BackColor = Color.LightGreen;
                     projeto.Button.UseVisualStyleBackColor = false;
-                    SetTextLabel($"labelProjetoProcessId_{projeto.Id}", ((projeto.Process ?? new Process()).Id).ToString());
                     break;
                 case ButtonStatusEnum.Loading:
                     projeto.Button.Enabled = false;
@@ -352,29 +361,25 @@ namespace DevControl.App.Windows
             ChangeButton(projeto, ButtonStatusEnum.Running);
         }
 
-        private void RegisterLog(ProgramEntity projeto, string type, string? logValue, object? sender, EventArgs? e)
+        private async void RegisterLog(ProgramEntity projeto, string type, string? logValue, object? sender, EventArgs? e)
         {
-            int? processId = null;
-
-            try
-            {
-                processId = projeto.Process.Id;
-            }
-            catch (Exception)
-            {
-
-            }
-
-
             var dto = new LogsProcessDto()
             {
                 SoftwareId = projeto.Id,
-                PID = processId,
+                PID = projeto.Process!.Id,
                 Type = type,
                 LogValue = logValue ?? ""
             };
 
-            _logsProcessRepository.ExecuteQueryAsync(dto, TypeQueryExecuteEnum.Insert);
+            try
+            {
+                await _logsProcessRepository.ExecuteQueryAsync(dto, TypeQueryExecuteEnum.Insert);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao tentar salvar o log.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
         }
 
         private void StopProcess(ProgramEntity projeto)
@@ -475,7 +480,7 @@ namespace DevControl.App.Windows
             return;
         }
 
-        private void btnStartService_Click(ProgramEntity projeto)
+        private void BtnStartService_Click(ProgramEntity projeto)
         {
 
             ChangeButton(projeto, ButtonStatusEnum.Loading);
@@ -490,94 +495,29 @@ namespace DevControl.App.Windows
             }
         }
 
-        private void btnCadastrarProjeto_Click(object sender, EventArgs e)
-        {
-            _programFormWindow.LoadDetails();
-            _programFormWindow.ShowDialog();
-        }
-
-        private void btnEditarProjeto_Click(ProgramEntity projeto)
+        private void BtnFormularioProjeto_Click(ProgramEntity? projeto = null)
         {
             _programFormWindow.LoadDetails(projeto);
             _programFormWindow.ShowDialog();
         }
 
-        private void btnApagarProjeto_Click(ProgramEntity projeto)
+        private async void BtnApagarProjeto_Click(ProgramEntity projeto)
         {
-            var result = MessageBox.Show($"Tem certeza que deseja remover o projeto {projeto.Name}? \n\nNem o código ou processo sofrerão alterações.", "Apagar Projeto", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            var result = MessageBox.Show($"Tem certeza que deseja apagar o projeto {projeto.Name}? \n\nNem o código ou processo sofrerão alterações.", "Apagar Projeto", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
             if (result == DialogResult.Yes)
             {
-                _programaRepository.ExecuteQuery(new ProgramDto { Id = projeto.Id }, TypeQueryExecuteEnum.Delete);
+                try
+                {
+                    await _programaRepository.ExecuteQueryAsync(new ProgramDto { Id = projeto.Id }, TypeQueryExecuteEnum.Delete);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao tentar apagar o programa.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 LoadProgramas();
             }
-        }
-
-        private void btnOpenVsCode_Click(ProgramEntity projeto)
-        {
-            var process = new Process
-            {
-                StartInfo = new ProcessStartInfo("cmd.exe", "/c code .")
-                {
-                    CreateNoWindow = true,
-                    UseShellExecute = false,
-                    WorkingDirectory = projeto.Path,
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true
-                }
-            };
-            process.Start();
-        }
-
-        private void btnOpenVisualStudio_Click(ProgramEntity projeto)
-        {
-            if (Directory.Exists(projeto.Path))
-            {
-                Process.Start("explorer.exe", projeto.Workspace!);
-            }
-            else
-            {
-                MessageBox.Show("Diretório não encontrado");
-            }
-        }
-
-        private void btnOpenLog_Click(ProgramEntity programa)
-        {
-            WindowProgramaLog _winProjetoLog = new(programa);
-            _winProjetoLog.Show();
-        }
-
-        private void btnOpenGit_Click(ProgramEntity projeto)
-        {
-            if (string.IsNullOrEmpty(projeto.RepositoryUrl))
-            {
-                MessageBox.Show($"O projeto {projeto.Name} não tem um diretório configurado.");
-                return;
-            }
-
-            try
-            {
-                Process.Start(new ProcessStartInfo(projeto.RepositoryUrl) { UseShellExecute = true });
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Não foi possível abrir o endereço {projeto.RepositoryUrl}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-
-        }
-
-        private void btnReloadProgramas_click(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.F5)
-            {
-                e.Handled = true;
-                e.SuppressKeyPress = true;
-                LoadProgramas(); // Chama a função desejada
-            }
-        }
-
-        private void btnReloadProgramas_Click(object sender, EventArgs e)
-        {
-            LoadProgramas();
         }
     }
 }

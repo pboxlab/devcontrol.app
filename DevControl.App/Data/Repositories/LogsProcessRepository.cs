@@ -45,27 +45,40 @@ namespace DevControl.App.Data.Repositories
 
         public async Task<List<LogsProcessEntity>> LoadRecordsAsync(LogsProcessModel query)
         {
-            var where  = " WHERE 1=1 ";
-                where += query.SoftwareId != null ? $" AND SoftwareId = {query.SoftwareId} " : "";
-                where += query.PID        != null ? $" AND PID        = {query.PID} "        : "";
-                where += query.Type       != null ? $" AND Type       = '{query.Type}' "     : "";
-                where += " ORDER BY CreatedAt asc ";
+            try
+            {
+                var where = " WHERE 1=1";
+                where += query.SoftwareId != null ? $" AND SoftwareId = {query.SoftwareId}" : "";
+                where += query.PID        != null ? $" AND PID        = {query.PID}" : "";
+                where += query.Type       != null ? $" AND Type       = '{query.Type}'" : "";
 
-            using var connection = new SQLiteConnection(_pathDataBase);
-            var result = await connection.QueryAsync<LogsProcessEntity>(sqlSelect + where);
-            return result.ToList();
+                using var connection = new SQLiteConnection(_pathDataBase);
+                var result = await connection.QueryAsync<LogsProcessEntity>($"{sqlSelect} {where} ORDER BY CreatedAt ASC");
+                return result.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async void ExecuteQueryAsync(LogsProcessDto dto, TypeQueryExecuteEnum isInsert)
+        public async Task ExecuteQueryAsync(LogsProcessDto dto, TypeQueryExecuteEnum isInsert)
         {
-            var query = isInsert switch
+            try
             {
-                TypeQueryExecuteEnum.Insert => sqlInsert,
-                TypeQueryExecuteEnum.Delete => sqlDelete,
-                _ => throw new NotImplementedException(),
-            };
-            using var connection = new SQLiteConnection(_pathDataBase);
-            await connection.ExecuteAsync(query, dto);
+                var query = isInsert switch
+                {
+                    TypeQueryExecuteEnum.Insert => sqlInsert,
+                    TypeQueryExecuteEnum.Delete => sqlDelete,
+                    _ => throw new NotImplementedException(),
+                };
+                using var connection = new SQLiteConnection(_pathDataBase);
+                await connection.ExecuteAsync(query, dto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

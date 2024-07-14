@@ -14,15 +14,23 @@ namespace DevControl.App.Windows
 
         public WindowProjeto()
         {
-            _projetoFormulario.ReloadProjetos += ReloadProjetos;
-
+            _projetoFormulario.ReloadProjetos += (sender, e) => LoadProjetos();
             InitializeComponent();
             LoadProjetos();
         }
 
         private async void LoadProjetos()
         {
-            _projetos = await _projetoRepository.LoadRecordsAsync();
+            try
+            {
+                _projetos = await _projetoRepository.LoadRecordsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao tentar carregar os projetos.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             panelProjects.Controls.Clear();
 
             int y = 10;
@@ -60,9 +68,9 @@ namespace DevControl.App.Windows
 
             var buttonList = new List<(object Text, int Width, string Tag, string Function)>
             {
-                new(Properties.Resources.btnDelete, 25, $"btnApagar_{projeto.Id}", "btnApagarProjeto_Click"),
-                new(Properties.Resources.btnEdit, 25, $"btnEditar_{projeto.Id}", "btnEditarProjeto_Click"),
-                new(Properties.Resources.btnOpenFolder, 25, $"btnExplorar_{projeto.Id}", "btnOpenDirectory_Click")
+                new(Properties.Resources.btnDelete,     25, $"btnProjetoApagar_{projeto.Id}", "apagarProjeto"),
+                new(Properties.Resources.btnEdit,       25, $"btnProjetoEditar_{projeto.Id}", "formularioProjeto"),
+                new(Properties.Resources.btnOpenFolder, 25, $"btnProjetoOpen_{projeto.Id}",   "openPath")
             };
 
             var b = widthTotal;
@@ -99,44 +107,41 @@ namespace DevControl.App.Windows
             {
                 switch (funcao)
                 {
-                    case "btnEditarProjeto_Click":
-                        button.Click += (s, e) => btnEditarProjeto_Click(projeto);
+                    case "formularioProjeto":
+                        button.Click += (s, e) => BtnFormularioProjeto_Click(projeto);
                         break;
-                    case "btnApagarProjeto_Click":
-                        button.Click += (s, e) => btnApagarProjeto_Click(projeto);
+                    case "apagarProjeto":
+                        button.Click += (s, e) => BtnApagarProjeto_Click(projeto);
                         break;
-                    case "btnOpenDirectory_Click":
-                        button.Click += (s, e) => DialogCommon.OpenDirectoryClick(projeto.Path);
+                    case "openPath":
+                        button.Click += (s, e) => DialogCommon.OpenPathClick(projeto.Path);
                         break;
                 }
             }
             return button;
         }
 
-        private void ReloadProjetos(object sender, EventArgs e)
-        {
-            LoadProjetos();
-        }
-
-        private void btnNovoProjeto_Click(object sender, EventArgs e)
-        {
-            _projetoFormulario.LoadDetails();
-            _projetoFormulario.ShowDialog();
-        }
-
-        private void btnEditarProjeto_Click(ProjectEntity projeto)
+        private void BtnFormularioProjeto_Click(ProjectEntity? projeto = null)
         {
             _projetoFormulario.LoadDetails(projeto);
             _projetoFormulario.ShowDialog();
         }
 
-        private void btnApagarProjeto_Click(ProjectEntity projeto)
+        private async void BtnApagarProjeto_Click(ProjectEntity projeto)
         {
-            var result = MessageBox.Show($"Tem certeza que deseja remover o projeto {projeto.Name}?", "Remover Projeto", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
+            var result = MessageBox.Show($"Realmente deseja apagar o projeto {projeto.Name}?", "Apagar Projeto", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
             if (result == DialogResult.Yes)
             {
-                _projetoRepository.ExecuteQueryAsync(new ProjectDto { Id = projeto.Id }, TypeQueryExecuteEnum.Delete);
-                LoadProjetos();
+                try
+                {
+                    await _projetoRepository.ExecuteQueryAsync(new ProjectDto { Id = projeto.Id }, TypeQueryExecuteEnum.Delete);
+                    LoadProjetos();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao tentar apagar o projeto.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }               
             }
         }
     }

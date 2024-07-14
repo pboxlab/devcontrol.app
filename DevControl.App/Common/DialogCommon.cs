@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Octokit;
+using System.Diagnostics;
 
 namespace DevControl.App.Common
 {
@@ -19,15 +20,37 @@ namespace DevControl.App.Common
             return "";
         }
 
-        public static void OpenDirectoryClick(string path)
+        public static void OpenPathClick(string workingDirectory, string fileName = "explorer.exe", string arguments = "")
         {
-            if (Directory.Exists(path))
+            try
             {
-                Process.Start("explorer.exe", path);
+                if (!string.IsNullOrEmpty(workingDirectory) && fileName == "explorer.exe" && (Directory.Exists(workingDirectory) || File.Exists(workingDirectory)))
+                {
+                    Process.Start(fileName, workingDirectory);
+                    return;
+                }
+                else if (!string.IsNullOrEmpty(workingDirectory) && fileName == "browser")
+                {
+                    Process.Start(new ProcessStartInfo(workingDirectory) { UseShellExecute = true });
+                    return;
+                }
+
+                var process = new Process
+                {
+                    StartInfo = new ProcessStartInfo(fileName, arguments)
+                    {
+                        CreateNoWindow = true,
+                        UseShellExecute = false,
+                        WorkingDirectory = workingDirectory,
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true
+                    }
+                };
+                process.Start();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Diretório não encontrado", "Diretório não encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Erro ao tentar abrir o caminho\n\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

@@ -42,23 +42,36 @@ namespace DevControl.App.Data.Repositories
 
         public async Task<List<ProjectEntity>> LoadRecordsAsync()
         {
-            var where = " ORDER BY Name asc ";
-            using var connection = new SQLiteConnection(_pathDataBase);
-            var result = await connection.QueryAsync<ProjectEntity>(sqlSelect + where);
-            return result.ToList();
+            try
+            {
+                using var connection = new SQLiteConnection(_pathDataBase);
+                      var result     = await connection.QueryAsync<ProjectEntity>($"{sqlSelect} ORDER BY Name asc");
+                return result.ToList();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
-        public async void ExecuteQueryAsync(ProjectDto dto, TypeQueryExecuteEnum isInsert)
+        public async Task ExecuteQueryAsync(ProjectDto dto, TypeQueryExecuteEnum isInsert)
         {
-            var query = isInsert switch
+            try
             {
-                TypeQueryExecuteEnum.Insert => sqlInsert,
-                TypeQueryExecuteEnum.Update => sqlUpdate,
-                TypeQueryExecuteEnum.Delete => sqlDelete,
-                _ => throw new NotImplementedException(),
-            };
-            using var connection = new SQLiteConnection(_pathDataBase);
-            await connection.ExecuteAsync(query, dto);
+                var query = isInsert switch
+                {
+                    TypeQueryExecuteEnum.Insert => sqlInsert,
+                    TypeQueryExecuteEnum.Update => sqlUpdate,
+                    TypeQueryExecuteEnum.Delete => sqlDelete,
+                                              _ => throw new NotImplementedException(),
+                };
+                using var connection = new SQLiteConnection(_pathDataBase);
+                await connection.ExecuteAsync(query, dto);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

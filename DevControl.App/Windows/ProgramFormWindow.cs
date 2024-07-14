@@ -53,7 +53,17 @@ namespace DevControl.App.Windows
 
         private async void LoadComboBoxDataAsync()
         {
-            var projects = await _projectRepository.LoadRecordsAsync();
+            List<ProjectEntity> projects = new();
+
+            try
+            {
+                projects = await _projectRepository.LoadRecordsAsync();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao tentar carregar os projetos.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             if (projects != null)
             {
@@ -73,7 +83,7 @@ namespace DevControl.App.Windows
             comboBoxProgramStart.Text = Program.ProcessName;
         }
 
-        private void btnSave_Click(object sender, EventArgs e)
+        private async void btnSave_Click(object sender, EventArgs e)
         {
             if (!ValidateForm()) return;
 
@@ -92,7 +102,16 @@ namespace DevControl.App.Windows
             };
 
             var queryType = Program.Id == 0 ? TypeQueryExecuteEnum.Insert : TypeQueryExecuteEnum.Update;
-            _programRepository.ExecuteQuery(dto, queryType);
+
+            try
+            {
+                await _programRepository.ExecuteQueryAsync(dto, queryType);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao tentar salvar o programa.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
 
             ResetForm();
             Close();

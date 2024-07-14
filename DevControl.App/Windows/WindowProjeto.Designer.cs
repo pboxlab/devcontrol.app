@@ -52,7 +52,7 @@
             btnNovoProjeto.TabIndex = 1;
             btnNovoProjeto.Text = "Novo Projeto";
             btnNovoProjeto.UseVisualStyleBackColor = true;
-            btnNovoProjeto.Click += btnNovoProjeto_Click;
+            btnNovoProjeto.Click += (s, e) => BtnFormularioProjeto_Click();
             // 
             // WindowProjeto
             // 

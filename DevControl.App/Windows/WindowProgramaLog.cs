@@ -2,6 +2,7 @@
 using DevControl.App.Data.Enum;
 using DevControl.App.Data.Models;
 using DevControl.App.Data.Repositories;
+using Microsoft.VisualBasic.Logging;
 using System.Diagnostics;
 
 namespace DevControl.App.Windows
@@ -38,7 +39,18 @@ namespace DevControl.App.Windows
         {
             _logsProcessModel.SoftwareId = _programa.Id;
 
-            var logs = await _logsProcessRepository.LoadRecordsAsync(_logsProcessModel);
+            List<LogsProcessEntity> logs = new();
+
+            try
+            {
+                logs = await _logsProcessRepository.LoadRecordsAsync(_logsProcessModel);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao tentar carregar os logs do programa.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
             listBoxLog.Items.Clear();
 
             foreach (var log in logs)
@@ -91,26 +103,43 @@ namespace DevControl.App.Windows
             labelCopyAlert.Visible = false;
         }
 
-        private void btnReloadLogs_Click(object sender, EventArgs e)
+        private void BtnReloadLogs_Click(object sender, EventArgs e)
         {
             LoadLogs();
             ShowCopyAlert("Log carregado");
         }
 
-        private void btnLimparLog_Click(object sender, EventArgs e)
+        private async void BtnLimparLog_Click(object sender, EventArgs e)
         {
             var result = MessageBox.Show($"Tem certeza que deseja limpar os logs do programa {_programa.Name}?", "Limpar Logs", MessageBoxButtons.YesNo, MessageBoxIcon.Exclamation);
             if (result == DialogResult.Yes)
             {
-                _logsProcessRepository.ExecuteQueryAsync(new() { SoftwareId = _programa.Id }, TypeQueryExecuteEnum.Delete);
+                try
+                {
+                    await _logsProcessRepository.ExecuteQueryAsync(new() { SoftwareId = _programa.Id }, TypeQueryExecuteEnum.Delete);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Erro ao tentar apagar logs.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
+
                 LoadLogs();
                 ShowCopyAlert("Log carregado");
             }
         }
 
-        private void checkProcessoAtual_CheckedChanged(object sender, EventArgs e)
+        private void CheckProcessoAtual_CheckedChanged(object sender, EventArgs e)
         {
-            _logsProcessModel.PID = checkProcessoAtual.Checked ? _programa.Process.Id : null ;
+            try
+            {
+                _logsProcessModel.PID = checkProcessoAtual.Checked ? _programa.Process!.Id : null ;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao tentar salvar o log.\n\nMensagem:\n{ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
             LoadLogs();
         }
     }

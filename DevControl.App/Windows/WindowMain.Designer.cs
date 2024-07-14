@@ -179,6 +179,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackColor = SystemColors.Control;
             ClientSize = new Size(1064, 881);
             Controls.Add(statusStrip1);
             Controls.Add(menuGlobal);
