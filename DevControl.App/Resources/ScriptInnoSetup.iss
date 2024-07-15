@@ -3,8 +3,8 @@
 
 #define CompanyName "PBOX Lab"
 #define MyAppName "DevControl App"
-#define MyAppVersion "1.0.0"
-#define MyAppPublisher "R:\repositorios\pboxlab\devcontrol.app\DevControl.App\bin\Release\Instalador"
+#define MyAppVersion "1.6.3"
+#define MyAppPublisher "R:\repositorios\pboxlab\devcontrol.app\DevControl.App\bin\Release\net7.0-windows"
 #define MyAppURL "https://devcontrol.app"
 #define MyAppExeName "DevControl App.exe"
 
