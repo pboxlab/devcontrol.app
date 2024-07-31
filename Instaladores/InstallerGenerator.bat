@@ -1,4 +1,4 @@
-cd R:\repositorios\pboxlab\devcontrol.app
+cd ..
 dotnet restore
 dotnet publish -c Release -o Instaladores\Release
-iscc /q R:\repositorios\pboxlab\devcontrol.app\Instaladores\ScriptSetup.iss
+iscc /q .\Instaladores\ScriptSetup.iss

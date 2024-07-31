@@ -59,7 +59,7 @@ namespace DevControl.App
             get
             {
                 Version version = Assembly.GetExecutingAssembly().GetName().Version;
-                return $"{version.Major}.{version.Minor}.{version.Build}";
+                return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
             }
         }
 
