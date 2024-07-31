@@ -3,7 +3,7 @@
 
 #define CompanyName "PBOX Lab"
 #define MyAppName "DevControl App"
-#define MyAppVersion "1.6.3"
+#define MyAppVersion "1.10.5"
 #define ProjectPath "R:\repositorios\pboxlab\devcontrol.app"
 #define MyAppPublisher "PBOX Software Lab"
 #define MyAppURL "https://devcontrol.app"
