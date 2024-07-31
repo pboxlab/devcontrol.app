@@ -1,3 +1,4 @@
+using DevControl.App.Services;
 using DevControl.App.Windows;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,12 @@ namespace DevControl.App
         [STAThread]
         static void Main(string[] args)
         {
+            if(args.Contains("/update"))
+            {
+                UpdateParameters updateParameters = new();
+                updateParameters.CheckParameters();
+            }
+
             using Mutex mutex = new(false, mutexName, out bool createdNew);
             if (!createdNew)
             {

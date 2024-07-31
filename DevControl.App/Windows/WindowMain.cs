@@ -1,6 +1,5 @@
 using DevControl.App.Services;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace DevControl.App.Windows
 {
@@ -103,7 +102,7 @@ namespace DevControl.App.Windows
 
         private void ServicePanel_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (AppConfig.HideProgramClosing)
+            if (AppConfig.HideProgramClosing && e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
                 Hide();
@@ -203,6 +202,5 @@ namespace DevControl.App.Windows
         {
             SetStatus();
         }
-
     }
 }
