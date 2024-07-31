@@ -6,7 +6,7 @@
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
-		<AssemblyName>$(MSBuildProjectName.Replace(".", " "))</AssemblyName>
+		<AssemblyName>DevControl App</AssemblyName>
 		<PackageId>$(AssemblyName)</PackageId>
 		<Product>$(AssemblyName)</Product>
 		<ApplicationIcon>Resources\favicon2.ico</ApplicationIcon>
@@ -14,7 +14,7 @@
 		<PackageProjectUrl>https://devcontrol.app</PackageProjectUrl>
 		<NeutralLanguage>pt-BR</NeutralLanguage>
 		<IncludeSourceRevisionInInformationalVersion>false</IncludeSourceRevisionInInformationalVersion>
-		<Version>1.11.5.0</Version>
+		<Version>1.12.5.0</Version>
 		<FileVersion>$(Version)</FileVersion>
 		<AssemblyVersion>$(Version)</AssemblyVersion>
 		<InformationalVersion>$(Version)</InformationalVersion>
@@ -67,9 +67,6 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<None Update="App.config">
-			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-		</None>
 		<None Update="Resources\favicon.png">
 			<Pack>True</Pack>
 			<PackagePath>\</PackagePath>

@@ -1,7 +1,5 @@
 ﻿using DevControl.App.Data.Repositories;
 using Microsoft.Win32;
-using System.Configuration;
-using System.Data.SQLite;
 
 namespace DevControl.App.Windows
 {
@@ -19,7 +17,7 @@ namespace DevControl.App.Windows
             base.OnShown(e);
 
             checkFecharPrograma.Checked = AppConfig.HideProgramClosing;
-            checkIniciaWindows.Checked = AppConfig.StartWithWindows;
+            checkIniciaWindows.Checked  = AppConfig.StartWithWindows;
 
             if (string.IsNullOrEmpty(AppConfig.PathDatabase) || !File.Exists(AppConfig.PathDatabase))
             {
@@ -48,15 +46,12 @@ namespace DevControl.App.Windows
             if (!_enableLoad)
                 return;
 
-            Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            config.AppSettings.Settings[key].Value = value;
-            config.Save(ConfigurationSaveMode.Modified);
-            ConfigurationManager.RefreshSection("appSettings");
+            AppConfig.SetRegKey(key, value);
         }
 
         private void checkFecharPrograma_CheckedChanged(object sender, EventArgs e)
         {
-            SetValueConfig("hide_program_closing", (checkFecharPrograma.Checked ? "true" : "false"));
+            SetValueConfig("HideProgramClosing", (checkFecharPrograma.Checked ? "true" : "false"));
         }
 
         private void SetStartup(bool enable)
@@ -82,7 +77,7 @@ namespace DevControl.App.Windows
                 return;
 
             SetStartup(checkIniciaWindows.Checked);
-            SetValueConfig("start_with_windows", (checkIniciaWindows.Checked ? "true" : "false"));
+            SetValueConfig("StartWithWindows", (checkIniciaWindows.Checked ? "true" : "false"));
         }
 
         private void btnBancoExistente_Click(object sender, EventArgs e)
@@ -105,8 +100,8 @@ namespace DevControl.App.Windows
                 {
                     labelBancoPath.Text = pathDB;
 
-                    SetValueConfig("path_database", pathDB);
-                    SetValueConfig("program_configured", "true");
+                    SetValueConfig("PathDatabase", pathDB);
+                    SetValueConfig("ProgramConfigured", "true");
 
                     MessageBox.Show("O banco de dados foi configurado!", "Banco configurado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
@@ -126,8 +121,8 @@ namespace DevControl.App.Windows
                     {
                         labelBancoPath.Text = createObjects;
 
-                        SetValueConfig("path_database", createObjects);
-                        SetValueConfig("program_configured", "true");
+                        SetValueConfig("PathDatabase", createObjects);
+                        SetValueConfig("ProgramConfigured", "true");
 
                         MessageBox.Show("O banco de dados foi configurado!", "Banco configurado", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }

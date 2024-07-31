@@ -1,13 +1,53 @@
-﻿using System.Configuration;
+﻿using Microsoft.Win32;
+using System.Configuration;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace DevControl.App
 {
     public class AppConfig
     {
-        private static bool? _hideProgramClosing;
-        private static bool? _programConfigured;
-        private static bool? _startWithWindows;
+        private static bool?  _hideProgramClosing;
+        private static bool?  _programConfigured;
+        private static bool?  _startWithWindows;
+
+        private static string _appName;
+        private static string _companyName;
+
+        private static void GetAssemblyValue()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            AssemblyCompanyAttribute companyAttribute = (AssemblyCompanyAttribute)assembly
+                .GetCustomAttributes(typeof(AssemblyCompanyAttribute), false)
+                .FirstOrDefault();
+
+            _appName = assembly.GetName().Name!;
+            _companyName = companyAttribute?.Company ?? "PBOX Lab";
+        }
+
+        private static string GetRegKey(string regName)
+        {
+            GetAssemblyValue();
+
+            var registryPath = @$"Software\{_companyName}\{_appName}";
+            var registry = Registry.CurrentUser.OpenSubKey(registryPath);
+            var value = (registry.GetValue(regName) ?? "").ToString();
+            registry.Close();
+            return value;
+        }
+
+        public static string SetRegKey(string name, string value)
+        {
+            GetAssemblyValue();
+
+            var registryPath = @$"Software\{_companyName}\{_appName}";
+            var registry = Registry.CurrentUser.CreateSubKey(registryPath);
+
+            registry.SetValue(name, value);
+            registry.Close();
+            return value;
+        }
 
         public static bool HideProgramClosing
         {
@@ -18,7 +58,7 @@ namespace DevControl.App
                     return _hideProgramClosing ?? true;
                 }
 
-                return ConfigurationManager.AppSettings["hide_program_closing"] == null || ConfigurationManager.AppSettings["hide_program_closing"] == "true";
+                return GetRegKey("HideProgramClosing") == "true";
             }
 
             set => _hideProgramClosing = value;
@@ -33,7 +73,7 @@ namespace DevControl.App
                     return _programConfigured ?? true;
                 }
 
-                return ConfigurationManager.AppSettings["program_configured"] == null || ConfigurationManager.AppSettings["program_configured"] == "true";
+                return GetRegKey("ProgramConfigured") == "true";
             }
 
             set => _programConfigured = value;
@@ -48,7 +88,7 @@ namespace DevControl.App
                     return _startWithWindows ?? true;
                 }
 
-                return ConfigurationManager.AppSettings["start_with_windows"] == null || ConfigurationManager.AppSettings["start_with_windows"] == "true";
+                return GetRegKey("StartWithWindows") == "true";
             }
 
             set => _startWithWindows = value;
@@ -58,19 +98,22 @@ namespace DevControl.App
         {
             get
             {
-                Version version = Assembly.GetExecutingAssembly().GetName().Version;
+                Version version = Assembly.GetExecutingAssembly().GetName().Version!;
                 return $"{version.Major}.{version.Minor}.{version.Build}.{version.Revision}";
             }
         }
 
         public static string PathDatabase
         {
-            get => ConfigurationManager.AppSettings["path_database"];
+            get => GetRegKey("PathDatabase");
         }
 
         public static string AppName
         {
-            get => ConfigurationManager.AppSettings["app_name"];
+            get
+            {
+                return _appName;
+            }
         }
     }
 }
