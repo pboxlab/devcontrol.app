@@ -28,12 +28,8 @@ namespace DevControl.App.Windows
 
             if (update)
             {
-                var result = MessageBox.Show($"Há uma atualização disponível para o {AppConfig.AppName}.\nDeseja atualizar agora?", "Atualizar", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (result == DialogResult.Yes)
-                {
-                    var formAjudaAtualizacao = new WindowAjudaAtualizacao();
-                    formAjudaAtualizacao.ShowDialog();
-                }
+                var formAjudaAtualizacao = new WindowAjudaAtualizacao();
+                formAjudaAtualizacao.ShowDialog();
             }
 
             if (!AppConfig.ProgramConfigured && string.IsNullOrEmpty(AppConfig.PathDatabase))

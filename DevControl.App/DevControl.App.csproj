@@ -10,9 +10,9 @@
     <PackageId>$(AssemblyName)</PackageId>
     <Product>$(AssemblyName)</Product>
     <ApplicationIcon>Resources\favicon2.ico</ApplicationIcon>
-    <PackageIcon>favicon.png</PackageIcon>
+    <PackageIcon>favicon2.png</PackageIcon>
     <PackageProjectUrl>https://devcontrol.app</PackageProjectUrl>
-    <Version></Version>
+    <Version>1.6.3</Version>
     <NeutralLanguage>pt-BR</NeutralLanguage>
     <AssemblyVersion>1.6.3</AssemblyVersion>
     <Company>PBOX Lab</Company>
@@ -20,6 +20,8 @@
     <RepositoryUrl>https://github.com/pboxlab/devcontrol.app</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PlatformTarget>x64</PlatformTarget>
+    <PackageOutputPath>..\Instaladores\Release\</PackageOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
