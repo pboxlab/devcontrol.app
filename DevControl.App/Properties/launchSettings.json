@@ -2,7 +2,7 @@
   "profiles": {
     "DevControl.App": {
       "commandName": "Project",
-      "commandLineArgs": "/background"
+      "commandLineArgs": "/update"
     }
   }
 }

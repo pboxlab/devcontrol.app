@@ -2,12 +2,12 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define CompanyName "PBOX Lab"
-#define MyAppName "DevControl App"
-#define MyAppVersion "1.10.5"
-#define ProjectPath "R:\repositorios\pboxlab\devcontrol.app"
-#define MyAppPublisher "PBOX Software Lab"
+#define MyAppPublisher "DevControl App"
 #define MyAppURL "https://devcontrol.app"
+#define MyAppName "DevControl App"
 #define MyAppExeName "DevControl App.exe"
+#define MyAppPath ".\Release\" + MyAppExeName
+#define MyAppVersion GetFileVersion(MyAppPath)
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -32,9 +32,9 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir={#ProjectPath}\Instaladores
+OutputDir={#SourcePath}
 OutputBaseFilename=DevControlApp-{#MyAppVersion}-Setup
-SetupIconFile={#ProjectPath}\DevControl.App\Resources\favicon2.ico
+SetupIconFile={#SourcePath}\..\DevControl.App\Resources\favicon2.ico
 UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma
 SolidCompression=yes
@@ -47,7 +47,7 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "{#ProjectPath}\Instaladores\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "{#SourcePath}\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
