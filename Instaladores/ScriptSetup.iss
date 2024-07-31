@@ -4,7 +4,8 @@
 #define CompanyName "PBOX Lab"
 #define MyAppName "DevControl App"
 #define MyAppVersion "1.6.3"
-#define MyAppPublisher "R:\repositorios\pboxlab\devcontrol.app\DevControl.App\bin\Release\net7.0-windows"
+#define ProjectPath "R:\repositorios\pboxlab\devcontrol.app"
+#define MyAppPublisher "PBOX Software Lab"
 #define MyAppURL "https://devcontrol.app"
 #define MyAppExeName "DevControl App.exe"
 
@@ -31,9 +32,10 @@ ArchitecturesInstallIn64BitMode=x64compatible
 DisableProgramGroupPage=yes
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=R:\repositorios\pboxlab\devcontrol.app\_instaladores
+OutputDir={#ProjectPath}\Instaladores
 OutputBaseFilename=DevControlApp-{#MyAppVersion}-Setup
-SetupIconFile=R:\repositorios\pboxlab\devcontrol.app\DevControl.App\Resources\favicon2.ico
+SetupIconFile={#ProjectPath}\DevControl.App\Resources\favicon2.ico
+UninstallDisplayIcon={app}\{#MyAppExeName}
 Compression=lzma
 SolidCompression=yes
 WizardStyle=modern
@@ -45,14 +47,12 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "R:\repositorios\pboxlab\devcontrol.app\DevControl.App\bin\Release\net7.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "R:\repositorios\pboxlab\devcontrol.app\DevControl.App\bin\Release\net7.0-windows\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
-; NOTE: Don't use "Flags: ignoreversion" on any shared system files
+Source: "{#ProjectPath}\Instaladores\Release\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 
 [Icons]
 Name: "{autoprograms}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
 Name: "{autodesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
 [Run]
-Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\{#MyAppExeName}"; Parameters: "/update"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, '&', '&&')}}"; Flags: nowait postinstall skipifsilent
 
