@@ -57,7 +57,8 @@ Este projeto é licenciado sob os termos da licença MIT. Veja o arquivo LICENSE
 Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para abrir uma issue ou enviar um e-mail para estevao.silva@pbox.com.br.
 
 ## Current Release
-[Download versão 1.12.5.0](https://github.com/pboxlab/devcontrol.app/releases/download/1.12.5.0/DevControlApp-1.12.5.0-Setup.exe)
+[Download versão 1.12.5.1](https://github.com/pboxlab/devcontrol.app/releases/download/1.12.5.1/DevControlApp-1.12.5.1-Setup.exe)
 
 - Installer Generator simplificado e build na versão;
 - Configurações da aplicação no Registro do Windows;
+- Dependency Installer Add DotNet7.0 Desktop
