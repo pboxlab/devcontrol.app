@@ -59,7 +59,5 @@ Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para abrir uma i
 ## Current Release
 [Download versão 1.12.5.0](https://github.com/pboxlab/devcontrol.app/releases/download/1.12.5.0/DevControlApp-1.12.5.0-Setup.exe)
 
-- Correção WindowMonitorDesigner;
-- Melhorias no ScriptSetup;
-- Correção de BUG para atualização do programa;
-- Melhoria atualização disponível.
+- Installer Generator simplificado e build na versão;
+- Configurações da aplicação no Registro do Windows;
