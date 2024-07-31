@@ -100,8 +100,7 @@
             btnNovoPrograma.Size = new Size(120, 30);
             btnNovoPrograma.TabIndex = 5;
             btnNovoPrograma.Text = "Novo Programa";
-            btnNovoPrograma.UseVisualStyleBackColor = true;
-            btnNovoPrograma.Click += (s, e) => BtnFormularioProjeto_Click();
+            btnNovoPrograma.UseVisualStyleBackColor = true;            
             // 
             // grupoFiltro
             // 
@@ -124,8 +123,7 @@
             btnReloadProgramas.Size = new Size(100, 30);
             btnReloadProgramas.TabIndex = 10;
             btnReloadProgramas.Text = "Recarregar (F5)";
-            btnReloadProgramas.UseVisualStyleBackColor = true;
-            btnReloadProgramas.Click += (s, e) => DataFiltroProjetos();
+            btnReloadProgramas.UseVisualStyleBackColor = true;            
             // 
             // WindowMonitor
             // 
@@ -139,13 +137,7 @@
             KeyPreview = true;
             Name = "WindowMonitor";
             Text = "Monitor de Serviços";
-            WindowState = FormWindowState.Maximized;
-            KeyDown += (s, e) => {
-                if (e.KeyCode == Keys.F5)
-                {
-                    DataFiltroProjetos();
-                }
-            };
+            WindowState = FormWindowState.Maximized;           
             grupoFiltro.ResumeLayout(false);
             grupoFiltro.PerformLayout();
             ResumeLayout(false);

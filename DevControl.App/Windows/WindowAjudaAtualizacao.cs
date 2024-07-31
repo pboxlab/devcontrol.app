@@ -1,4 +1,5 @@
-﻿using Octokit;
+﻿using DevControl.App.Common;
+using Octokit;
 using System.Diagnostics;
 using System.Net;
 
@@ -12,17 +13,15 @@ namespace DevControl.App.Windows
 
         public WindowAjudaAtualizacao(bool check)
         {
-           
+
         }
 
         public WindowAjudaAtualizacao()
         {
             InitializeComponent();
 
-            labelTitle.Text   = $"Verificando a versão mais recente...";
             labelVersion.Text = $"";
             labelMessage.Text = $"";
-            btnFechar.Visible = false;
             btnUpdate.Visible = false;
 
             CheckVersion();
@@ -53,20 +52,24 @@ namespace DevControl.App.Windows
         private async void CheckVersion()
         {
             var isNewVersion      = await HaveNewerVersion();
-                                  
-            labelTitle.Text       = AppConfig.AppName;
-            labelVersion.Text     = $"Sua versão atual: {AppConfig.VersionProgram}";
+
+            labelVersion.Text     = $"Versão instalada: {AppConfig.VersionProgram}";
+            label1.Visible        = false;
 
             if (isNewVersion)
             {
-                labelMessage.Text = $"A nova versão {_repositoryVersion} do {AppConfig.AppName} já está disponível!";
+                this.Text         = $"Atualização disponível!";
+                labelMessage.Text = $"A versão {_repositoryVersion} do {AppConfig.AppName} já está disponível!";
                 btnUpdate.Text    = $"Atualizar para {_repositoryVersion}";
                 btnUpdate.Visible = true;
+
+                label1.Visible = true;
+                label1.Text = "Veja o que há de novo!";
             }
             else
             {
-                labelMessage.Text = $"Você já está usando a versão mais recente, não há novas atualizações disponíveis no momento.";
-                btnFechar.Visible = true;
+                this.Text         = "Programa atualizado";
+                labelMessage.Text = $"Você já está usando a versão mais recente.";
             }
         }
 
@@ -103,19 +106,19 @@ namespace DevControl.App.Windows
                     }
                     else
                     {
-                        labelMessage.Text ="Download concluído.";
+                        labelMessage.Text = "Download concluído.";
                         ExecuteInstaller(filePath);
                     }
                 };
 
                 try
                 {
-                    labelMessage.Text ="Baixando atualização...";
+                    labelMessage.Text = "Baixando atualização...";
                     await webClient.DownloadFileTaskAsync(new Uri(url), filePath);
                 }
                 catch (Exception ex)
                 {
-                    labelMessage.Text =$"Ocorreu um erro durante o download: {ex.Message}";
+                    labelMessage.Text = $"Ocorreu um erro durante o download: {ex.Message}";
                     _startDownload = false;
                 }
             }
@@ -145,6 +148,11 @@ namespace DevControl.App.Windows
                 MessageBox.Show($"Atualização ainda não concluída", "Aguarde", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return;
             }
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+            DialogCommon.OpenPathClick($"https://github.com/pboxlab/devcontrol.app/releases/tag/{_repositoryVersion}", "browser");
         }
     }
 }

@@ -42,6 +42,14 @@ A versão atual do DevControl App é **1.0.0**.
   <img src="DevControl.App/Resources/Prints/Tela-04-Configuracoes.jpg" alt="DevControl App" width="600">
 </p>
 
+## Gerar Instalador
+Siga os passos abaixo para gerar o instalador do DevControl App:
+1. Baixe e instale o **[Inno Setup](https://jrsoftware.org/isdl.php)**.
+2. Abra a pasta **Instaladores** localizada na raiz do repositório.
+2. Edite o arquivo **ScriptSetup.iss**, conforme necessário, substituindo as informações da **PBOX**.
+3. Execute o arquivo **InstallerGenerator.bat**;
+4. O instalador será gerado na pasta **Instaladores**.
+
 ## Licença
 Este projeto é licenciado sob os termos da licença MIT. Veja o arquivo LICENSE para mais detalhes.
 
@@ -49,14 +57,9 @@ Este projeto é licenciado sob os termos da licença MIT. Veja o arquivo LICENSE
 Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para abrir uma issue ou enviar um e-mail para estevao.silva@pbox.com.br.
 
 ## Current Release
-[Download versão 1.6.3](https://github.com/pboxlab/devcontrol.app/releases/download/1.6.3/DevControlApp-1.6.3-Setup.exe)
+[Download versão 1.10.5](https://github.com/pboxlab/devcontrol.app/releases/download/1.10.5/DevControlApp-1.10.5-Setup.exe)
 
-- Verificação e Validação do Banco de Dados na Inicialização; [#1](https://github.com/pboxlab/devcontrol.app/issues/1)
-- Atualizar combobox projetos ao clicar no botão de recarregar [#2](https://github.com/pboxlab/devcontrol.app/issues/2)
-- Configuração de Injeção de Dependências Global;
-- Melhoria no Tratamento de Exceções;
-- Refatoração das Classes de Repositórios;
-- Aprimoramento do Método OpenPathClick;
-- Correção de Chamadas Assíncronas;
-- Ajuste nas Nomenclaturas dos Métodos;
-- Refatoração da Classe WindowMonitor;
+- Correção WindowMonitorDesigner;
+- Melhorias no ScriptSetup;
+- Correção de BUG para atualização do programa;
+- Melhoria atualização disponível.

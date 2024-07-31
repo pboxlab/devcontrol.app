@@ -27,6 +27,16 @@ namespace DevControl.App.Windows
         {
             InitializeComponent();
             _programFormWindow.ProgramsReloaded += (s, e) => LoadProgramas();
+
+
+            btnNovoPrograma.Click += (s, e) => BtnFormularioProjeto_Click();
+            btnReloadProgramas.Click += (s, e) => DataFiltroProjetos();
+            KeyDown += (s, e) => {
+                if (e.KeyCode == Keys.F5)
+                {
+                    DataFiltroProjetos();
+                }
+            };
         }
 
         protected override void OnShown(EventArgs e)

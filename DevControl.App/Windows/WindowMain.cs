@@ -1,6 +1,5 @@
 using DevControl.App.Services;
 using System.Diagnostics;
-using System.Windows.Forms;
 
 namespace DevControl.App.Windows
 {
@@ -29,12 +28,8 @@ namespace DevControl.App.Windows
 
             if (update)
             {
-                var result = MessageBox.Show($"Há uma atualização disponível para o {AppConfig.AppName}.\nDeseja atualizar agora?", "Atualizar", MessageBoxButtons.YesNo, MessageBoxIcon.Information);
-                if (result == DialogResult.Yes)
-                {
-                    var formAjudaAtualizacao = new WindowAjudaAtualizacao();
-                    formAjudaAtualizacao.ShowDialog();
-                }
+                var formAjudaAtualizacao = new WindowAjudaAtualizacao();
+                formAjudaAtualizacao.ShowDialog();
             }
 
             if (!AppConfig.ProgramConfigured && string.IsNullOrEmpty(AppConfig.PathDatabase))
@@ -103,7 +98,7 @@ namespace DevControl.App.Windows
 
         private void ServicePanel_FormClosing(object sender, FormClosingEventArgs e)
         {
-            if (AppConfig.HideProgramClosing)
+            if (AppConfig.HideProgramClosing && e.CloseReason == CloseReason.UserClosing)
             {
                 e.Cancel = true;
                 Hide();
@@ -203,6 +198,5 @@ namespace DevControl.App.Windows
         {
             SetStatus();
         }
-
     }
 }
