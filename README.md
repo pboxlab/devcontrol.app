@@ -25,22 +25,14 @@
 - **Framework**: .NET
 - **Interface Gráfica**: Windows Forms
 
-## Versão
-A versão atual do DevControl App é **1.0.0**.
+## Versão **1.12.5.1**
 
-## Prints
-<p align="center">
-  <img src="DevControl.App/Resources/Prints/Tela-01-MonitorServicos.jpg" alt="DevControl App" width="600">
-  </p>
-  <p align="center">
-  <img src="DevControl.App/Resources/Prints/Tela-02-Projetos.jpg" alt="DevControl App" width="600">
-  </p>
-  <p align="center">
-  <img src="DevControl.App/Resources/Prints/Tela-03-Ferramentas.jpg" alt="DevControl App" width="600">
-  </p>
-  <p align="center">
-  <img src="DevControl.App/Resources/Prints/Tela-04-Configuracoes.jpg" alt="DevControl App" width="600">
-</p>
+[Download versão 1.12.5.1](https://github.com/pboxlab/devcontrol.app/releases/download/1.12.5.1/DevControlApp-1.12.5.1-Setup.exe)
+
+Notas da atualização
+- Installer Generator simplificado e build na versão;
+- Configurações da aplicação no Registro do Windows;
+- Dependency Installer Add DotNet7.0 Desktop
 
 ## Gerar Instalador
 Siga os passos abaixo para gerar o instalador do DevControl App:
@@ -55,10 +47,3 @@ Este projeto é licenciado sob os termos da licença MIT. Veja o arquivo LICENSE
 
 ## Contato
 Se você tiver alguma dúvida ou sugestão, sinta-se à vontade para abrir uma issue ou enviar um e-mail para estevao.silva@pbox.com.br.
-
-## Current Release
-[Download versão 1.12.5.1](https://github.com/pboxlab/devcontrol.app/releases/download/1.12.5.1/DevControlApp-1.12.5.1-Setup.exe)
-
-- Installer Generator simplificado e build na versão;
-- Configurações da aplicação no Registro do Windows;
-- Dependency Installer Add DotNet7.0 Desktop
