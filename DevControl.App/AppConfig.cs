@@ -1,7 +1,5 @@
 ﻿using Microsoft.Win32;
-using System.Configuration;
 using System.Reflection;
-using System.Windows.Input;
 
 namespace DevControl.App
 {
@@ -11,25 +9,25 @@ namespace DevControl.App
         private static bool?  _programConfigured;
         private static bool?  _startWithWindows;
 
-        private static string _appName;
-        private static string _companyName;
+        private static string _appName = GetAssemblyName();
+        private static string _companyName = GetAssemblyCompany();
 
-        private static void GetAssemblyValue()
+        private static string GetAssemblyName()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-
-            AssemblyCompanyAttribute companyAttribute = (AssemblyCompanyAttribute)assembly
+            var assembly = Assembly.GetExecutingAssembly();
+            return assembly.GetName().Name ?? "DevControl App";
+        }
+        private static string GetAssemblyCompany()
+        {
+            var assembly         = Assembly.GetExecutingAssembly();
+            var companyAttribute = (AssemblyCompanyAttribute)assembly
                 .GetCustomAttributes(typeof(AssemblyCompanyAttribute), false)
-                .FirstOrDefault();
-
-            _appName = assembly.GetName().Name!;
-            _companyName = companyAttribute?.Company ?? "PBOX Lab";
+                .FirstOrDefault()!;
+            return companyAttribute?.Company ?? "PBOX Lab";
         }
 
         private static string GetRegKey(string regName)
         {
-            GetAssemblyValue();
-
             var registryPath = @$"Software\{_companyName}\{_appName}";
             var registry = Registry.CurrentUser.OpenSubKey(registryPath);
             var value = (registry.GetValue(regName) ?? "").ToString();
@@ -39,8 +37,6 @@ namespace DevControl.App
 
         public static string SetRegKey(string name, string value)
         {
-            GetAssemblyValue();
-
             var registryPath = @$"Software\{_companyName}\{_appName}";
             var registry = Registry.CurrentUser.CreateSubKey(registryPath);
 

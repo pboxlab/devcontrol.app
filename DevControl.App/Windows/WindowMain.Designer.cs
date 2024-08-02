@@ -36,6 +36,7 @@
             toolStripSeparator1 = new ToolStripSeparator();
             menuItemArquivoSair = new ToolStripMenuItem();
             menuItemMonitor = new ToolStripMenuItem();
+            menuItemProgramas = new ToolStripMenuItem();
             menuItemProjetos = new ToolStripMenuItem();
             menuItemFerramentas = new ToolStripMenuItem();
             menuItemAjuda = new ToolStripMenuItem();
@@ -53,7 +54,7 @@
             // 
             // menuGlobal
             // 
-            menuGlobal.Items.AddRange(new ToolStripItem[] { menuItemArquivos, menuItemMonitor, menuItemProjetos, menuItemFerramentas, menuItemAjuda });
+            menuGlobal.Items.AddRange(new ToolStripItem[] { menuItemArquivos, menuItemMonitor, menuItemProgramas, menuItemProjetos, menuItemFerramentas, menuItemAjuda });
             menuGlobal.Location = new Point(0, 0);
             menuGlobal.Name = "menuGlobal";
             menuGlobal.RenderMode = ToolStripRenderMode.System;
@@ -95,6 +96,12 @@
             menuItemMonitor.Tag = "WindowMonitor";
             menuItemMonitor.Text = "&Monitor";
             menuItemMonitor.Click += menuItem_Click;
+            // 
+            // menuItemProgramas
+            // 
+            menuItemProgramas.Name = "menuItemProgramas";
+            menuItemProgramas.Size = new Size(76, 20);
+            menuItemProgramas.Text = "Programas";
             // 
             // menuItemProjetos
             // 
@@ -189,8 +196,8 @@
             MainMenuStrip = menuGlobal;
             MaximizeBox = false;
             Name = "WindowMain";
-            Text = AppConfig.AppName;
             StartPosition = FormStartPosition.CenterScreen;
+            Text = AppConfig.AppName;
             FormClosing += ServicePanel_FormClosing;
             menuGlobal.ResumeLayout(false);
             menuGlobal.PerformLayout();
@@ -223,5 +230,6 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel labelUseMemory;
         private System.Windows.Forms.Timer timer1;
+        private ToolStripMenuItem menuItemProgramas;
     }
 }
