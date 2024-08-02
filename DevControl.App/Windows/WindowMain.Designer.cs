@@ -37,6 +37,8 @@
             menuItemArquivoSair = new ToolStripMenuItem();
             menuItemMonitor = new ToolStripMenuItem();
             menuItemProgramas = new ToolStripMenuItem();
+            menuItemCodigoExistente = new ToolStripMenuItem();
+            menuItemClonarRepositorio = new ToolStripMenuItem();
             menuItemProjetos = new ToolStripMenuItem();
             menuItemFerramentas = new ToolStripMenuItem();
             menuItemAjuda = new ToolStripMenuItem();
@@ -99,9 +101,24 @@
             // 
             // menuItemProgramas
             // 
+            menuItemProgramas.DropDownItems.AddRange(new ToolStripItem[] { menuItemCodigoExistente, menuItemClonarRepositorio });
             menuItemProgramas.Name = "menuItemProgramas";
             menuItemProgramas.Size = new Size(76, 20);
             menuItemProgramas.Text = "Programas";
+            // 
+            // menuItemCodigoExistente
+            // 
+            menuItemCodigoExistente.Name = "menuItemCodigoExistente";
+            menuItemCodigoExistente.Size = new Size(180, 22);
+            menuItemCodigoExistente.Text = "Código existente";
+            menuItemCodigoExistente.Click += menuItemCodigoExistente_Click;
+            // 
+            // menuItemClonarRepositorio
+            // 
+            menuItemClonarRepositorio.Name = "menuItemClonarRepositorio";
+            menuItemClonarRepositorio.Size = new Size(180, 22);
+            menuItemClonarRepositorio.Text = "Clonar repositório";
+            menuItemClonarRepositorio.Click += menuItemClonarRepositorio_Click;
             // 
             // menuItemProjetos
             // 
@@ -197,7 +214,7 @@
             MaximizeBox = false;
             Name = "WindowMain";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = AppConfig.AppName;
+            Text = "DevControl App";
             FormClosing += ServicePanel_FormClosing;
             menuGlobal.ResumeLayout(false);
             menuGlobal.PerformLayout();
@@ -231,5 +248,7 @@
         private ToolStripStatusLabel labelUseMemory;
         private System.Windows.Forms.Timer timer1;
         private ToolStripMenuItem menuItemProgramas;
+        private ToolStripMenuItem menuItemCodigoExistente;
+        private ToolStripMenuItem menuItemClonarRepositorio;
     }
 }

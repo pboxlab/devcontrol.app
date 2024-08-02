@@ -26,16 +26,11 @@ namespace DevControl.App.Windows
         public WindowMonitor()
         {
             InitializeComponent();
+
             _programFormWindow.ProgramsReloaded += (s, e) => LoadProgramas();
-
-
-            btnNovoPrograma.Click += (s, e) => BtnFormularioProjeto_Click();
-            btnReloadProgramas.Click += (s, e) => DataFiltroProjetos();
-            KeyDown += (s, e) => {
-                if (e.KeyCode == Keys.F5)
-                {
-                    DataFiltroProjetos();
-                }
+            btnReloadProgramas.Click            += (s, e) => DataFiltroProjetos();
+            KeyDown                             += (s, e) => {
+                if (e.KeyCode == Keys.F5) DataFiltroProjetos();                
             };
         }
 
