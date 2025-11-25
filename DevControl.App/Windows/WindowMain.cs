@@ -1,5 +1,7 @@
 using DevControl.App.Services;
+using Octokit;
 using System.Diagnostics;
+using Application = System.Windows.Forms.Application;
 
 namespace DevControl.App.Windows
 {
@@ -197,6 +199,19 @@ namespace DevControl.App.Windows
         private void timer1_Tick(object sender, EventArgs e)
         {
             SetStatus();
+        }
+
+        private void menuItemCodigoExistente_Click(object sender, EventArgs e)
+        {
+            ProgramFormWindow programFormWindow = new();
+            programFormWindow.LoadDetails();
+            programFormWindow.ShowDialog(); 
+        }
+
+        private void menuItemClonarRepositorio_Click(object sender, EventArgs e)
+        {
+            ProgramCloneWindow programCloneWindow = new();
+            programCloneWindow.ShowDialog();
         }
     }
 }

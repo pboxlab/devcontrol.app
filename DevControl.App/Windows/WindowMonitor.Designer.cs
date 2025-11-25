@@ -33,7 +33,6 @@
             boxFiltroProjeto = new ComboBox();
             labelFiltroProjetos = new Label();
             boxFiltroTipo = new ComboBox();
-            btnNovoPrograma = new Button();
             grupoFiltro = new GroupBox();
             btnReloadProgramas = new Button();
             grupoFiltro.SuspendLayout();
@@ -93,22 +92,12 @@
             boxFiltroTipo.ValueMember = "Id";
             boxFiltroTipo.SelectedIndexChanged += BoxFilterProjetos_SelectedIndexChanged;
             // 
-            // btnNovoPrograma
-            // 
-            btnNovoPrograma.Location = new Point(6, 19);
-            btnNovoPrograma.Name = "btnNovoPrograma";
-            btnNovoPrograma.Size = new Size(120, 30);
-            btnNovoPrograma.TabIndex = 5;
-            btnNovoPrograma.Text = "Novo Programa";
-            btnNovoPrograma.UseVisualStyleBackColor = true;            
-            // 
             // grupoFiltro
             // 
             grupoFiltro.Controls.Add(btnReloadProgramas);
             grupoFiltro.Controls.Add(labelFiltroTipos);
             grupoFiltro.Controls.Add(labelFiltroProjetos);
             grupoFiltro.Controls.Add(boxFiltroTipo);
-            grupoFiltro.Controls.Add(btnNovoPrograma);
             grupoFiltro.Controls.Add(boxFiltroProjeto);
             grupoFiltro.Location = new Point(12, 12);
             grupoFiltro.Name = "grupoFiltro";
@@ -118,12 +107,12 @@
             // 
             // btnReloadProgramas
             // 
-            btnReloadProgramas.Location = new Point(132, 19);
+            btnReloadProgramas.Location = new Point(6, 18);
             btnReloadProgramas.Name = "btnReloadProgramas";
             btnReloadProgramas.Size = new Size(100, 30);
             btnReloadProgramas.TabIndex = 10;
             btnReloadProgramas.Text = "Recarregar (F5)";
-            btnReloadProgramas.UseVisualStyleBackColor = true;            
+            btnReloadProgramas.UseVisualStyleBackColor = true;
             // 
             // WindowMonitor
             // 
@@ -137,7 +126,7 @@
             KeyPreview = true;
             Name = "WindowMonitor";
             Text = "Monitor de Serviços";
-            WindowState = FormWindowState.Maximized;           
+            WindowState = FormWindowState.Maximized;
             grupoFiltro.ResumeLayout(false);
             grupoFiltro.PerformLayout();
             ResumeLayout(false);
@@ -147,7 +136,6 @@
         private Label    labelFiltroProjetos;
         private Label    labelFiltroTipos;
         private Panel    panelMotiporProgramas;
-        private Button   btnNovoPrograma;
         private ComboBox boxFiltroProjeto;
         private ComboBox boxFiltroTipo;
         private GroupBox grupoFiltro;

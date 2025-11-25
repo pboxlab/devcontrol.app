@@ -36,6 +36,9 @@
             toolStripSeparator1 = new ToolStripSeparator();
             menuItemArquivoSair = new ToolStripMenuItem();
             menuItemMonitor = new ToolStripMenuItem();
+            menuItemProgramas = new ToolStripMenuItem();
+            menuItemCodigoExistente = new ToolStripMenuItem();
+            menuItemClonarRepositorio = new ToolStripMenuItem();
             menuItemProjetos = new ToolStripMenuItem();
             menuItemFerramentas = new ToolStripMenuItem();
             menuItemAjuda = new ToolStripMenuItem();
@@ -53,7 +56,7 @@
             // 
             // menuGlobal
             // 
-            menuGlobal.Items.AddRange(new ToolStripItem[] { menuItemArquivos, menuItemMonitor, menuItemProjetos, menuItemFerramentas, menuItemAjuda });
+            menuGlobal.Items.AddRange(new ToolStripItem[] { menuItemArquivos, menuItemMonitor, menuItemProgramas, menuItemProjetos, menuItemFerramentas, menuItemAjuda });
             menuGlobal.Location = new Point(0, 0);
             menuGlobal.Name = "menuGlobal";
             menuGlobal.RenderMode = ToolStripRenderMode.System;
@@ -95,6 +98,27 @@
             menuItemMonitor.Tag = "WindowMonitor";
             menuItemMonitor.Text = "&Monitor";
             menuItemMonitor.Click += menuItem_Click;
+            // 
+            // menuItemProgramas
+            // 
+            menuItemProgramas.DropDownItems.AddRange(new ToolStripItem[] { menuItemCodigoExistente, menuItemClonarRepositorio });
+            menuItemProgramas.Name = "menuItemProgramas";
+            menuItemProgramas.Size = new Size(76, 20);
+            menuItemProgramas.Text = "Programas";
+            // 
+            // menuItemCodigoExistente
+            // 
+            menuItemCodigoExistente.Name = "menuItemCodigoExistente";
+            menuItemCodigoExistente.Size = new Size(169, 22);
+            menuItemCodigoExistente.Text = "Código existente";
+            menuItemCodigoExistente.Click += menuItemCodigoExistente_Click;
+            // 
+            // menuItemClonarRepositorio
+            // 
+            menuItemClonarRepositorio.Name = "menuItemClonarRepositorio";
+            menuItemClonarRepositorio.Size = new Size(169, 22);
+            menuItemClonarRepositorio.Text = "Clonar repositório";
+            menuItemClonarRepositorio.Click += menuItemClonarRepositorio_Click;
             // 
             // menuItemProjetos
             // 
@@ -183,14 +207,13 @@
             ClientSize = new Size(1064, 881);
             Controls.Add(statusStrip1);
             Controls.Add(menuGlobal);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             IsMdiContainer = true;
             MainMenuStrip = menuGlobal;
             MaximizeBox = false;
             Name = "WindowMain";
-            Text = AppConfig.AppName;
             StartPosition = FormStartPosition.CenterScreen;
+            Text = "DevControl App";
             FormClosing += ServicePanel_FormClosing;
             menuGlobal.ResumeLayout(false);
             menuGlobal.PerformLayout();
@@ -223,5 +246,8 @@
         private StatusStrip statusStrip1;
         private ToolStripStatusLabel labelUseMemory;
         private System.Windows.Forms.Timer timer1;
+        private ToolStripMenuItem menuItemProgramas;
+        private ToolStripMenuItem menuItemCodigoExistente;
+        private ToolStripMenuItem menuItemClonarRepositorio;
     }
 }

@@ -1,0 +1,37 @@
+[
+  {
+    "name": "DevControlApp-0.0.1",
+    "file": "DevControlApp-0.0.1-Setup.exe",
+    "version": "0.0.1"
+  },
+  {
+    "name": "DevControlApp-1.0.0",
+    "file": "DevControlApp-1.0.0-Setup.exe",
+    "version": "1.0.0"
+  },
+  {
+    "name": "DevControlApp-1.6.3",
+    "file": "DevControlApp-1.6.3-Setup.exe",
+    "version": "1.6.3"
+  },
+  {
+    "name": "DevControlApp-1.10.5",
+    "file": "DevControlApp-1.10.5-Setup.exe",
+    "version": "1.10.5"
+  },
+  {
+    "name": "DevControlApp-1.12.5.0",
+    "file": "DevControlApp-1.12.5.0-Setup.exe",
+    "version": "1.12.5.0"
+  },
+  {
+    "name": "DevControlApp-1.12.5.1",
+    "file": "DevControlApp-1.12.5.1-Setup.exe",
+    "version": "1.12.5.1"
+  },
+  {
+    "name": "DevControlApp-1.13.7.1",
+    "file": "DevControlApp-1.13.7.1-Setup.exe",
+    "version": "1.13.7.1"
+  }
+]

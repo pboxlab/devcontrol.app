@@ -10,32 +10,28 @@ namespace DevControl.App.Windows
 {
     public partial class WindowMonitor : Form
     {
-        private          int?                  _modelProjetoId;
-        private          ProgramTypeEnum?      _modelTipoId;
-        private          bool                  _enableLoad            = false;
+        private int? _modelProjetoId;
+        private ProgramTypeEnum? _modelTipoId;
+        private bool _enableLoad = false;
 
-        private readonly ProcessService        _processService        = new();
-        private readonly ProjectRepository     _projetoRepository     = new();
-        private readonly ProgramRepository     _programaRepository    = new();
+        private readonly ProcessService _processService = new();
+        private readonly ProjectRepository _projetoRepository = new();
+        private readonly ProgramRepository _programaRepository = new();
         private readonly LogsProcessRepository _logsProcessRepository = new();
 
-        private          List<ProgramEntity>   _programasAll          = new();
-        private          List<ProgramEntity>   _programas             = new();
-        private          ProgramFormWindow     _programFormWindow     = new();
+        private List<ProgramEntity> _programasAll = new();
+        private List<ProgramEntity> _programas = new();
+        private ProgramFormWindow _programFormWindow = new();
 
         public WindowMonitor()
         {
             InitializeComponent();
+
             _programFormWindow.ProgramsReloaded += (s, e) => LoadProgramas();
-
-
-            btnNovoPrograma.Click += (s, e) => BtnFormularioProjeto_Click();
             btnReloadProgramas.Click += (s, e) => DataFiltroProjetos();
-            KeyDown += (s, e) => {
-                if (e.KeyCode == Keys.F5)
-                {
-                    DataFiltroProjetos();
-                }
+            KeyDown += (s, e) =>
+            {
+                if (e.KeyCode == Keys.F5) DataFiltroProjetos();
             };
         }
 
@@ -65,7 +61,20 @@ namespace DevControl.App.Windows
             }
 
             projetos.Insert(0, new() { Id = 0, Name = "", Path = "" });
+
+            int selectedProject = 0;
+
+            if (boxFiltroProjeto.SelectedValue != null && int.TryParse(boxFiltroProjeto.SelectedValue.ToString(), out selectedProject) && selectedProject != 0)
+            {
+                _modelProjetoId = selectedProject;
+            }
+
             boxFiltroProjeto.DataSource = projetos;
+
+            if (selectedProject != 0)
+            {
+                boxFiltroProjeto.SelectedValue = selectedProject;
+            }
         }
 
         public void DataFiltroTipos()
@@ -146,17 +155,17 @@ namespace DevControl.App.Windows
                 Size = new Size(20, 20),
                 Image = projeto.Type switch
                 {
-                    ProgramTypeEnum.DotNet  => Properties.Resources.iconDotNet20x,
+                    ProgramTypeEnum.DotNet => Properties.Resources.iconDotNet20x,
                     ProgramTypeEnum.Angular => Properties.Resources.iconAngular20x,
-                    ProgramTypeEnum.NodeJs  => Properties.Resources.iconNodeJs20x,
-                    ProgramTypeEnum.PHP     => Properties.Resources.iconPhp20x,
-                    _                       => Properties.Resources.iconAnyFile20x,
+                    ProgramTypeEnum.NodeJs => Properties.Resources.iconNodeJs20x,
+                    ProgramTypeEnum.PHP => Properties.Resources.iconPhp20x,
+                    _ => Properties.Resources.iconAnyFile20x,
                 }
             });
 
             var labelList = new List<(string Text, string Name, int Width)>()
             {
-                new (projeto.Name!,            $"labelProgramaNome_{projeto.Id}", 150),
+                new (projeto.Name!,            $"labelProgramaNome_{projeto.Id}", 250),
                 new (projeto.ProjectName!,     $"labelProjetoNome_{projeto.Id}",  150),
                 new (projeto.Port.ToString()!, $"labelProgramaPorta_{projeto.Id}", 50),
             };
@@ -234,7 +243,8 @@ namespace DevControl.App.Windows
                         button.Click += (s, e) => DialogCommon.OpenPathClick(programa.RepositoryUrl!, "browser");
                         break;
                     case "btnOpenEditor_Click":
-                        button.Click += (s, e) => {
+                        button.Click += (s, e) =>
+                        {
                             if (programa.Type == ProgramTypeEnum.DotNet)
                             {
                                 DialogCommon.OpenPathClick(programa.Workspace!);
@@ -529,5 +539,6 @@ namespace DevControl.App.Windows
                 LoadProgramas();
             }
         }
+
     }
 }
