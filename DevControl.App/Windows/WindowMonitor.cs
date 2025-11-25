@@ -61,7 +61,20 @@ namespace DevControl.App.Windows
             }
 
             projetos.Insert(0, new() { Id = 0, Name = "", Path = "" });
+
+            int selectedProject = 0;
+
+            if (boxFiltroProjeto.SelectedValue != null && int.TryParse(boxFiltroProjeto.SelectedValue.ToString(), out selectedProject) && selectedProject != 0)
+            {
+                _modelProjetoId = selectedProject;
+            }
+
             boxFiltroProjeto.DataSource = projetos;
+
+            if (selectedProject != 0)
+            {
+                boxFiltroProjeto.SelectedValue = selectedProject;
+            }
         }
 
         public void DataFiltroTipos()
