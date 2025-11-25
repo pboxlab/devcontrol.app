@@ -25,14 +25,14 @@
 - **Framework**: .NET
 - **Interface Gráfica**: Windows Forms
 
-## Versão **1.12.5.1**
+## Versão **1.13.7.1**
 
-[Download versão 1.12.5.1](https://github.com/pboxlab/devcontrol.app/releases/download/1.12.5.1/DevControlApp-1.12.5.1-Setup.exe)
+[Download versão 1.13.7.1](https://github.com/pboxlab/devcontrol.app/releases/download/1.13.7.1/DevControlApp-1.13.7.1-Setup.exe)
 
 Notas da atualização
-- Installer Generator simplificado e build na versão;
-- Configurações da aplicação no Registro do Windows;
-- Dependency Installer Add DotNet7.0 Desktop
+- Correção arquivo README;
+- Novo menu Programas;
+- Ao atualizar, manter filtro "Projeto"
 
 ## Gerar Instalador
 Siga os passos abaixo para gerar o instalador do DevControl App:
