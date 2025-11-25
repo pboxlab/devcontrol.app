@@ -28,5 +28,10 @@
     "name": "DevControlApp-1.12.5.1",
     "file": "DevControlApp-1.12.5.1-Setup.exe",
     "version": "1.12.5.1"
+  },
+  {
+    "name": "DevControlApp-1.13.7.1",
+    "file": "DevControlApp-1.13.7.1-Setup.exe",
+    "version": "1.13.7.1"
   }
 ]
