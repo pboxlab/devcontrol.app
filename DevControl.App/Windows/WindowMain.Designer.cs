@@ -109,14 +109,14 @@
             // menuItemCodigoExistente
             // 
             menuItemCodigoExistente.Name = "menuItemCodigoExistente";
-            menuItemCodigoExistente.Size = new Size(180, 22);
+            menuItemCodigoExistente.Size = new Size(169, 22);
             menuItemCodigoExistente.Text = "Código existente";
             menuItemCodigoExistente.Click += menuItemCodigoExistente_Click;
             // 
             // menuItemClonarRepositorio
             // 
             menuItemClonarRepositorio.Name = "menuItemClonarRepositorio";
-            menuItemClonarRepositorio.Size = new Size(180, 22);
+            menuItemClonarRepositorio.Size = new Size(169, 22);
             menuItemClonarRepositorio.Text = "Clonar repositório";
             menuItemClonarRepositorio.Click += menuItemClonarRepositorio_Click;
             // 
@@ -207,7 +207,6 @@
             ClientSize = new Size(1064, 881);
             Controls.Add(statusStrip1);
             Controls.Add(menuGlobal);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
             Icon = (Icon)resources.GetObject("$this.Icon");
             IsMdiContainer = true;
             MainMenuStrip = menuGlobal;

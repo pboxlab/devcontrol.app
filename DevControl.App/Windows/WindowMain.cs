@@ -205,12 +205,13 @@ namespace DevControl.App.Windows
         {
             ProgramFormWindow programFormWindow = new();
             programFormWindow.LoadDetails();
-            programFormWindow.ShowDialog();
+            programFormWindow.ShowDialog(); 
         }
 
         private void menuItemClonarRepositorio_Click(object sender, EventArgs e)
         {
-
+            ProgramCloneWindow programCloneWindow = new();
+            programCloneWindow.ShowDialog();
         }
     }
 }

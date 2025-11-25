@@ -91,19 +91,42 @@ namespace DevControl.App.Data.Repositories
             }
         }
 
-        public async Task ExecuteQueryAsync(ProgramDto dto, TypeQueryExecuteEnum isInsert)
+        public async Task<ProgramEntity> ExecuteQueryAsync(ProgramDto dto, TypeQueryExecuteEnum isInsertOrUpdate)
         {
             try
             {
-                var query = isInsert switch
+                var query = isInsertOrUpdate switch
                 {
                     TypeQueryExecuteEnum.Insert => sqlInsert,
                     TypeQueryExecuteEnum.Update => sqlUpdate,
                     TypeQueryExecuteEnum.Delete => sqlDelete,
                     _ => throw new NotImplementedException(),
                 };
+
                 using var connection = new SQLiteConnection(_pathDataBase);
+                await connection.OpenAsync();
+                using var transaction = connection.BeginTransaction();
+
+
                 await connection.ExecuteAsync(query, dto);
+
+                int id;
+                if (isInsertOrUpdate == TypeQueryExecuteEnum.Insert)
+                {
+                    id = await connection.ExecuteScalarAsync<int>("SELECT last_insert_rowid()");
+                }
+                else
+                {
+                    // Assuming dto has a property 'Id' which holds the primary key value for update
+                    id = (int)dto.Id;
+                }
+
+                transaction.Commit();
+
+                var resultQuery = "SELECT * FROM Softwares WHERE Id = @Id";
+                var result = await connection.QuerySingleOrDefaultAsync<ProgramEntity>(resultQuery, new { Id = id });
+
+                return result;
             }
             catch (Exception ex)
             {
